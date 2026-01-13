@@ -1,5 +1,4 @@
 import { GithubListUserClient } from "../../../service/api/github/profile/list/github.list.profile.client";
-import { isApiErrorGuardResponse } from "../../../service/api/guard/is-api-error-guard";
 import { profileResponseToModelMapper } from "./profile.response.to.model.mapper";
 import type { ProfileState } from "./profile.state";
 
@@ -17,21 +16,23 @@ export async function searchRequest({ q, callback, signal }: SearchRequestParams
         })
         return;
     }
-    
+
     callback({
         status: "loading",
     })
-    
-    const client = new GithubListUserClient()
-    const res = await client.request({ q, signal })
 
-    if (isApiErrorGuardResponse(res)) {
+    try {
+        const client = new GithubListUserClient()
+        const res = await client.request({ q, signal })
+        callback({
+            status: "loaded",
+            values: res.items.map(item => profileResponseToModelMapper(item)),
+        })
+    } catch (error) {
         callback({
             status: "error",
-            message: res.message
+            message: error instanceof Error ? error.message : "Unknown error"
         })
-        return;
     }
 
-    callback({ status: "loaded", values: res.items.map(item => profileResponseToModelMapper(item)) })
 }   

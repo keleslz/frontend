@@ -9,7 +9,6 @@ type SearchProps = {
 }
 
 export const Search = memo(({ onChange, error, value }: SearchProps) => {
-    console.log('search.rebuilded')
     return <div
         className={styles.container}
     >
