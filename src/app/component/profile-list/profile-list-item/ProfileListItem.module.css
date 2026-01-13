@@ -1,0 +1,46 @@
+.container {
+  border-radius: 4px;
+  background-color: #d5d5d5;
+  position: relative;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  -webkit-box-shadow: 6px 9px 8px -4px rgba(0, 0, 0, 0.76);
+  box-shadow: 6px 9px 10px -4px rgba(0, 0, 0, 0.76);
+}
+
+.checkbox {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.avatar {
+  border-radius: 50%;
+  display: block;
+}
+
+.id,
+.login {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: start;
+}
+
+.login {
+  margin-bottom: 10px;
+}
+
+.button {
+  display: flex;
+  text-align: center;
+  background-color: #04a1ff;
+  border-radius: 4px;
+  padding: 4px;
+  color: black;
+  font-size: 12px;
+}
