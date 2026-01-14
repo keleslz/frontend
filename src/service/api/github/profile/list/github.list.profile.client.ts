@@ -8,10 +8,9 @@ export class GithubListUserClient extends ApiClient<ListUserClientInputData, Lis
             method: 'GET',
             signal: input.signal,
         })
-
         const rateLimitRemaining = data.headers.get('x-ratelimit-remaining');
         if (
-            data.status === 429 ||
+            [429, 403].includes(data.status)  ||
             (rateLimitRemaining && Number(rateLimitRemaining) === 0)
         ) {
             throw new Error("Max request reached")

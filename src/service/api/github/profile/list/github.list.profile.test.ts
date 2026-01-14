@@ -1,12 +1,12 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { GithubListUserClient } from './github.list.profile.client';
 
 describe('GithubListUserClient', () => {
   beforeEach(() => {
-    vi.restoreAllMocks();
+    vi.resetAllMocks();
   });
 
-  test('calls fetch with correct URL and abort signal', async () => {
+  it('should call fetch with correct URL and abort signal', async () => {
     const fetchMock = vi.fn(() =>
       Promise.resolve({
         status: 200,
@@ -37,7 +37,7 @@ describe('GithubListUserClient', () => {
     );
   });
 
-  test('throw a rate limit error on 429 response', async () => {
+  it('should throw a rate limit error on 429 response', async () => {
     const fetchMock = vi.fn(() =>
       Promise.resolve({
         status: 429,
@@ -53,7 +53,23 @@ describe('GithubListUserClient', () => {
     expect(fetchMock).toHaveBeenCalled();
   });
 
-  test('throw a rate limit error when x-ratelimit-remaining header equal to 0', async () => {
+  it('should throw a rate limit error on 403 response', async () => {
+    const fetchMock = vi.fn(() =>
+      Promise.resolve({
+        status: 403,
+        headers: { get: () => '1' },
+      })
+    )
+
+    globalThis.fetch = fetchMock as unknown as typeof fetch;
+
+    const client = new GithubListUserClient();
+
+    await expect(client.request({ q: 'user' })).rejects.toThrowError("Max request reached");
+    expect(fetchMock).toHaveBeenCalled();
+  });
+
+  it('should throw a rate limit error when x-ratelimit-remaining header equal to 0', async () => {
     const fetchMock = vi.fn(() =>
       Promise.resolve({
         status: 200,
@@ -69,7 +85,7 @@ describe('GithubListUserClient', () => {
     expect(fetchMock).toHaveBeenCalled();
   });
 
-  test('throw an error on a non-200 response', async () => {
+  it('should throw an error on a non-200 response', async () => {
     const statusTextMessage = "Internal Server Error"
     const fetchMock = vi.fn(() =>
       Promise.resolve({
@@ -86,7 +102,7 @@ describe('GithubListUserClient', () => {
     expect(fetchMock).toHaveBeenCalled();
   });
 
-  test('parses successful response', async () => {
+  it('should parse successful response', async () => {
     const successMockResponse = {
       total_count: 1,
       incomplete_results: false,

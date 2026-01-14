@@ -12,7 +12,7 @@ export const Search = memo(({ onChange, error, value }: SearchProps) => {
     return <div
         className={styles.container}
     >
-        <form
+        <div
             className={styles.inputContainer}
         >
             <SearchInput
@@ -23,6 +23,6 @@ export const Search = memo(({ onChange, error, value }: SearchProps) => {
                 className={styles.input}
             />
             {error && <small className={styles.error}>{error}</small>}
-        </form>
+        </div>
     </div>
 })

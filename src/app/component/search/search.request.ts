@@ -29,6 +29,12 @@ export async function searchRequest({ q, callback, signal }: SearchRequestParams
             values: res.items.map(item => profileResponseToModelMapper(item)),
         })
     } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+            callback({
+                status: "idle",
+            })
+            return;
+        }
         callback({
             status: "error",
             message: error instanceof Error ? error.message : "Unknown error"

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
+
 export const useDebounce = () => {
-    const timeoutRef = useRef<number | null>(null)
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     useEffect(() => {
         return () => {
