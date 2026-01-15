@@ -2,11 +2,11 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
   e2e: {
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setupNodeEvents(_on: Cypress.PluginEvents, _config: Cypress.PluginConfigOptions) {
       return {
         fixturesFolder: './cypress/fixtures'
-      }
+      } as Cypress.PluginConfigOptions
     },
   },
 });

@@ -77,6 +77,10 @@ End-to-End Tests (Cypress)
 <br>
 <br>
 
+# Requirements
+- Node v24.10.0
+
+
 # Running the Project
 
 

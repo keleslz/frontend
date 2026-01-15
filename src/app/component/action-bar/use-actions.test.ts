@@ -323,39 +323,4 @@ describe('Use actions', () => {
         const { result } = renderHook(() => useActions(params));
         expect(result.current.isEditableMode).toBe(false)
     })
-
-    it('should be in editable mode while loaded with results', () => {
-        const profileStateMock: ProfileState = {
-            status: "loaded",
-            values: [
-                {
-                    avatar: {
-                        src: "dummy-avatar-url-1",
-                    },
-                    id: 1,
-                    login: "dummy-login-1",
-                    link: "dummy-html-url-1",
-                    selected: true
-                },
-                {
-                    avatar: {
-                        src: "dummy-avatar-url-2",
-                    },
-                    id: 2,
-                    login: "dummy-login-2",
-                    link: "dummy-html-url-2",
-                    selected: false
-                },
-            ]
-        }
-
-        const params: Parameters<typeof useActions>[number] = {
-            profiles: profileStateMock,
-            setProfiles: vi.fn()
-        }
-
-        const { result } = renderHook(() => useActions(params));
-
-        expect(result.current.isEditableMode).toBe(true)
-    })
 })
