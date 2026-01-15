@@ -1,73 +1,113 @@
-# React + TypeScript + Vite
+# Search Feature – Technical Documentation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project implements a GitHub profile search feature with the following capabilities:
+- Debounced user input
+- Request cancellation using AbortController
+- Loading, Success, error, empty, and idle states
+- Unit, integration, and end-to-end tests
 
-## React Compiler
+The goal is to provide a responsive, resilient, and maintainable search experience while keeping concerns well separated.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<br>
+<br>
 
-## Expanding the ESLint configuration
+# Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The project is structured to clearly separate responsibilities and promote reusability:
+- <b>app</b>
+    - assets – static files (CSS, images, etc.)
+    - component – application-specific components and logic
+- <b>component</b>
+    - Generic UI components that can be reused across projects
+- <b>lib</b>
+    - Pure functions and generic hooks/utilities reusable in any React project
+- <b>model</b>
+    - Domain models and business representations, reusable across future versions of the application (v2, v3, etc.)
+- <b>service</b>
+    - Side effects and complex business interactions (API calls .. etc)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<br>
+<br>
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# UI & Logic Design
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Any component that contains non-trivial logic has its logic wrapped inside a dedicated hook.
+For example: `<Search />` delegates its logic to `useSearch()`.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+useSearch responsibilities
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The useSearch hook is responsible for:
+- Managing the search query
+- Triggering debounced search requests
+- Cancelling in-flight requests when the query changes
+- Exposes computed UI state (loading, error, noResults, etc.)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+States
+
+The UI transitions through the following states:
+- `idle` – no query has been submitted
+- `loading` – a request is in progress
+- `loaded` – results have been successfully fetched
+- `error` – an error occurred during the request
+
+<br>
+<br>
+
+# Testing Strategy
+
+Unit Tests (Vitest)
+- Atomic tests for pure functions and isolated logic
+- Focus on behavior and edge cases
+
+Integration Tests (Vitest)
+- External dependencies are mocked
+- Validation of request flows and state transitions
+- Ensures collaboration between modules
+
+End-to-End Tests (Cypress)
+- User interaction testing aligned with user stories
+- Covers real usage scenarios
+- Network requests are mocked using fixtures to ensure consistency tests
+- Includes edge cases such as empty results, errors, and API limits
+
+
+<br>
+<br>
+
+# Running the Project
+
+
+```bash 
+# Install dependencies
+npm install
+
+# Run the application
+npm run dev
+
+# Run unit & integration tests
+npm run test
+
+# Run end-to-end tests
+npm run e2e
+ ```
+
+⸻
+
+# Notes & Limitations
+
+Due to limited available time, the testing strategy focuses on demonstrating the overall approach rather than achieving full test coverage.
+
+Some edge cases and UI behaviors could be further refined, including:
+- Additional action button scenarios
+- Extended error-handling cases
+- Deeper coverage of uncommon edge conditions
+
+This project was also an opportunity to explore Vitest, as well as a non-Redux state management approach relying on hooks and effects.
+
+With more time, the next steps would have been::
+- Increasing test coverage
+- Refining UI state transitions
+- Improving separation between domain logic and UI concerns

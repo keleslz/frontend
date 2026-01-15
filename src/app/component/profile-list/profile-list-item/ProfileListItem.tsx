@@ -9,7 +9,7 @@ type ProfileListItemProps = {
 
 export function ProfileListItem({ isEditableMode, profile, onSelect }: ProfileListItemProps) {
     const { id, link, login, avatar, selected } = profile
-    return <div className={styles.container} >
+    return <div className={styles.profileListItemContainer} >
         {isEditableMode && <input
             checked={selected}
             onChange={() => onSelect(id)}

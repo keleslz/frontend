@@ -10,43 +10,54 @@ type ActionBarProps = {
   onDelete: () => void
   onDuplicate: () => void
   onSelectAll: () => void
+  toggleEditMode: () => void
   profiles: Profile[]
   selectedCount: number
   isEditableMode: boolean;
 }
 
-export const ActionBar = memo(({ isEditableMode, selectedCount, onSelectAll, profiles, onDelete, onDuplicate }: ActionBarProps) => {
-  return <div className={styles.container}>
+export const ActionBar = memo(({ toggleEditMode, isEditableMode, selectedCount, onSelectAll, profiles, onDelete, onDuplicate }: ActionBarProps) => {
+  return <div className={styles.actionbarContainer}>
 
     <div className={styles.leftSection}>
-      {isEditableMode && <>
+      {(isEditableMode && profiles.length > 0) && <>
         <button
           role="button"
           aria-pressed={selectedCount === profiles.length}
           aria-label="Select all profiles"
           onClick={onSelectAll}
+          disabled={!isEditableMode}
           className={styles.selectedContainer}
-        >{selectedCount === profiles.length ? <CheckedIcon /> : <NotCheckedIcon />}</button>
-        {selectedCount > 0 && <div><span className={styles.selectedCount}>{selectedCount}</span> <span className={styles.countMesage}>selected items</span></div>}
+        >{isEditableMode && selectedCount === profiles.length ? <CheckedIcon /> : <NotCheckedIcon />}</button>
+        {selectedCount > 0 && <div><span className={styles.selectedCount}>{selectedCount}</span> <span className={styles.countMesage}>elements selected</span></div>}
       </>}
     </div>
 
     <div className={styles.rightSection}>
-      {isEditableMode && <>
+
+      {isEditableMode && profiles.length > 0 && <>
         <button
           role="button"
           aria-label="Delete selected profiles"
           onClick={onDelete}
-          disabled={selectedCount === 0}
+          disabled={selectedCount === 0 || !isEditableMode}
         ><TrashIcon /></button>
 
         <button
           role="button"
           aria-label="Duplicate selected profiles"
           onClick={onDuplicate}
-          disabled={selectedCount === 0}
+          disabled={selectedCount === 0 || !isEditableMode}
         ><DuplicateIcon /></button>
       </>}
+
+      <button
+        role="button"
+        aria-label="Toggle edit mode"
+        onClick={toggleEditMode}
+        disabled={profiles.length === 0}
+        className="edit-mode"
+      >{isEditableMode && profiles.length > 0 ? "Cancel" : "Edit"}</button>
     </div>
-  </div>
+  </div >
 });

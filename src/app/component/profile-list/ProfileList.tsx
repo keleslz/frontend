@@ -23,6 +23,6 @@ export const ProfileList = memo(({ isEditableMode, onSelect, items, isLoading, n
             />
         </li>)}
         <LoaderCircle className={styles.loader} active={isLoading} />
-        {noResults && <div>No results</div>}
+        {noResults && <div className="no-result-message">No results</div>}
     </ul>
 })

@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "npx vitest"
+    "test": "npx vitest",
+    "e2e": "npx cypress run"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -18,11 +19,12 @@
     "@eslint/js": "^9.39.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.1",
-    "@testing-library/react-hooks": "^8.0.1",
-    "@types/node": "^24.10.1",
+    "@types/cypress": "^0.1.6",
+    "@types/node": "^24.10.8",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "cypress": "^15.9.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

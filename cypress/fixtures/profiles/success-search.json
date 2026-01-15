@@ -1,0 +1,24 @@
+{
+  "total_count": 3,
+  "incomplete_results": true,
+  "items": [
+    {
+      "avatar_url": "https://picsum.photos/200/300?random=1",
+      "id": 1,
+      "login": "login-1",
+      "html_url": "http://github.com/keleslz#1"
+    },
+    {
+      "avatar_url": "https://picsum.photos/200/300?random=2",
+      "id": 2,
+      "login": "login-2",
+      "html_url": "http://github.com/keleslz#1"
+    },
+    {
+      "avatar_url": "https://picsum.photos/200/300?random=3",
+      "id": 3,
+      "login": "login-3",
+      "html_url": "http://github.com/keleslz#3"
+    }
+  ]
+}

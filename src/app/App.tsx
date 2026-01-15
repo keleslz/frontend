@@ -21,6 +21,7 @@ function App() {
     onDuplicate,
     onSelect,
     onSelectAll,
+    toggleEditMode,
     isEditableMode,
     selectedCount
   } = useActions(state)
@@ -33,12 +34,14 @@ function App() {
       value={query}
       error={error}
     />
+
     <ActionBar
       isEditableMode={isEditableMode}
       profiles={profiles}
       onDelete={onDelete}
       onDuplicate={onDuplicate}
       onSelectAll={onSelectAll}
+      toggleEditMode={toggleEditMode}
       selectedCount={selectedCount}
     />
 

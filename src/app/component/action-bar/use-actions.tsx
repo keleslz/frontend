@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Profile } from "../../../model/profile";
 import type { ProfilesLoadedState, ProfileState } from "../search/profile.state";
 
@@ -7,6 +8,8 @@ type UseActionsProps = {
 };
 
 export const useActions = ({ profiles, setProfiles }: UseActionsProps) => {
+    const [editMode, setEditMode] = useState(false)
+
     function onSelect(id: number) {
         if (profiles.status !== "loaded") {
             return;
@@ -64,6 +67,22 @@ export const useActions = ({ profiles, setProfiles }: UseActionsProps) => {
             return;
         }
         callback(profiles, selecteds)
+        setEditMode(false)
+    }
+
+    function toggleEditMode() {
+        if (profiles.status !== "loaded") {
+            setEditMode(false)
+            return
+        }
+
+        if (editMode) {
+            setProfiles({
+                ...profiles,
+                values: profiles.values.map(p => ({ ...p, selected: false }))
+            })
+        }
+        setEditMode(!editMode)
     }
 
     return {
@@ -71,7 +90,8 @@ export const useActions = ({ profiles, setProfiles }: UseActionsProps) => {
         onDuplicate,
         onDelete,
         onSelectAll,
-        isEditableMode: profiles.status === "loaded" && profiles.values.length > 0,
+        toggleEditMode,
+        isEditableMode: editMode,
         selectedCount: profiles.status === "loaded" ? profiles.values.filter(p => p.selected).length : 0,
     }
 };
